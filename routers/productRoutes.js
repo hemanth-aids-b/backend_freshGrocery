@@ -1,20 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const { getProducts, addProduct, deleteProduct } = require('../controllers/productController');
-const { verifyAdmin } = require('../middleware/authMiddleware');
+const { getAllProducts, addProduct, updateProduct, deleteProduct } = require('../controllers/productController');
 
 // Get all products (public)
-router.get('/', getProducts);
+router.get('/', getAllProducts);
 
-// Add a product (Admin only)
-router.post('/', verifyAdmin, addProduct);
+// Add a product
+router.post('/', addProduct);
 
-// Delete a product by ID (Admin only)
-router.delete('/:id', verifyAdmin, deleteProduct);
+// Update a product
+router.put('/:id', updateProduct);
 
-module.exports = router;
+// Delete a product by ID
+router.delete('/:id', deleteProduct);
+
 // Get product categories
 router.get('/categories', (req, res) => {
   const categories = ['Fruits', 'Vegetables', 'Dairy', 'Beverages', 'Snacks', 'Bakery'];
   res.json(categories);
 });
+
+module.exports = router;
