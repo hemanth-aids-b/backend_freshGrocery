@@ -1,7 +1,7 @@
 // backend/routers/orderRoutes.js
 const express = require('express');
 const Order = require('../models/Order');
-const User = require('../models/user'); // your user model
+const User = require('../models/User'); // your user model
 const router = express.Router();
 
 // Place an order
