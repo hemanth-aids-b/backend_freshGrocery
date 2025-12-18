@@ -8,6 +8,7 @@ const productRoutes = require('./routers/productRoutes');
 const cartRoutes = require('./routers/cartRoutes');
 const orderRoutes = require('./routers/orderRoutes');
 const categoryRoutes = require('./routers/categoryRoutes');
+const contactRoutes = require('./routers/contactRoutes');
 
 const { verifyAdmin } = require('./middleware/authMiddleware'); // import admin middleware
 
@@ -33,6 +34,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Health check endpoint
 app.get('/', (req, res) => {

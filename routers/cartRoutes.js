@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { addToCart, removeFromCart, getCartItems } = require('../controllers/cartController');
+const { addToCart, decrementFromCart, removeFromCart, getCartItems } = require('../controllers/cartController');
 
 const router = express.Router();
 
@@ -10,6 +10,12 @@ router.post('/add', [
   body('productId').notEmpty().withMessage('Product ID is required'),
   body('quantity').optional().isNumeric().withMessage('Quantity must be a number')
 ], addToCart);
+
+// Decrement from cart
+router.post('/decrement', [
+  body('userId').notEmpty().withMessage('User ID is required'),
+  body('productId').notEmpty().withMessage('Product ID is required')
+], decrementFromCart);
 
 // Remove from cart
 router.post('/remove', [

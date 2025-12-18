@@ -33,6 +33,36 @@ const addToCart = async (req, res) => {
   }
 };
 
+// Decrement item quantity in cart
+const decrementFromCart = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ success: false, message: 'Validation failed', data: errors.array() });
+
+    const { userId, productId } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+    const existingItem = user.cart.find(item => item.product.toString() === productId);
+    if (existingItem) {
+      if (existingItem.quantity > 1) {
+        existingItem.quantity -= 1;
+      } else {
+        user.cart = user.cart.filter(item => item.product.toString() !== productId);
+      }
+    }
+
+    await user.save();
+    await user.populate('cart.product');
+
+    res.json({ success: true, message: 'Item decremented from cart', data: user.cart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error', data: error.message });
+  }
+};
+
 // Remove item from cart
 const removeFromCart = async (req, res) => {
   try {
@@ -70,4 +100,4 @@ const getCartItems = async (req, res) => {
   }
 };
 
-module.exports = { addToCart, removeFromCart, getCartItems };
+module.exports = { addToCart, decrementFromCart, removeFromCart, getCartItems };
